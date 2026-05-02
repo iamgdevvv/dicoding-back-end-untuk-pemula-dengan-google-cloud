@@ -1,4 +1,4 @@
-import { IBook } from "./vendor/types";
+import { IBook } from './vendor/types';
 
 const books: IBook[] = [];
 
