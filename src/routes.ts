@@ -1,3 +1,4 @@
+import { ServerRoute } from '@hapi/hapi';
 import {
 	addBookHandler,
 	getAllBooksHandler,
@@ -6,7 +7,7 @@ import {
 	deleteBookByIdHandler,
 } from './handler';
 
-const routes = [
+const routes: ServerRoute[] = [
 	{
 		method: 'POST',
 		path: '/books',

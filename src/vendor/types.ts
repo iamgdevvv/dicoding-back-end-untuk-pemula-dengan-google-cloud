@@ -2,57 +2,48 @@ import { z } from 'zod';
 
 const BookSchema = z
 	.object({
-		id: z
-			.string({
-				invalid_type_error: 'ID buku wajib dalam format string',
-			})
-			.optional(),
-		name: z.string({
-			required_error: 'Mohon isi nama buku',
-			invalid_type_error: 'Nama buku wajib dalam format string',
-		}),
+		id: z.string('ID buku wajib dalam format string').optional(),
+		name: z
+			.string('Nama buku wajib dalam format string')
+			.min(1, 'Mohon isi nama buku'),
 		year: z
-			.number({
-				required_error: 'Mohon isi tahun buku',
-				invalid_type_error: 'Tahun buku wajib dalam format number',
-			})
+			.number('Tahun buku wajib dalam format number')
 			.min(0, 'Tahun buku tidak bisa kurang dari waktu 0')
-			.max(new Date().getFullYear(), 'Tahun buku tidak bisa melebihi waktu saat ini'),
-		author: z.string({
-			required_error: 'Mohon isi penulis buku',
-			invalid_type_error: 'Penulis buku wajib dalam format string',
-		}),
-		summary: z.string({
-			required_error: 'Mohon isi rangkuman buku',
-			invalid_type_error: 'Rangkuman buku wajib dalam format string',
-		}),
-		publisher: z.string({
-			required_error: 'Mohon isi penerbit buku',
-			invalid_type_error: 'Penerbit buku wajib dalam format string',
-		}),
-		pageCount: z.number({
-			required_error: 'Mohon isi total halaman buku',
-			invalid_type_error: 'Total halaman buku wajib dalam format string',
-		}),
-		readPage: z.number({
-			required_error: 'Mohon isi halaman terakhir buku',
-			invalid_type_error: 'Halaman terakhir buku wajib dalam format string',
-		}),
-		reading: z.boolean({
-			required_error: 'Mohon isi true/false untuk sedang baca buku',
-			invalid_type_error: 'Sedang baca buku wajib dalam format boolean',
-		}),
-		finished: z.boolean().optional(),
-		insertedAt: z.string().optional(),
-		updatedAt: z.string().optional(),
+			.max(
+				new Date().getFullYear(),
+				'Tahun buku tidak bisa melebihi waktu saat ini',
+			),
+		author: z
+			.string('Penulis buku wajib dalam format string')
+			.min(1, 'Mohon isi penulis buku'),
+		summary: z
+			.string('Rangkuman buku wajib dalam format string')
+			.min(1, 'Mohon isi rangkuman buku'),
+		publisher: z
+			.string('Penerbit buku wajib dalam format string')
+			.min(1, 'Mohon isi penerbit buku'),
+		pageCount: z
+			.number('Total halaman buku wajib dalam format string')
+			.min(1, 'Mohon isi total halaman buku'),
+		readPage: z
+			.number('Halaman terakhir buku wajib dalam format string')
+			.min(1, 'Mohon isi halaman terakhir buku'),
+		reading: z.boolean('Mohon isi true/false untuk sedang baca buku'),
+		finished: z
+			.boolean('Selesai baca buku wajib dalam format boolean')
+			.optional(),
+		insertedAt: z
+			.string('Tanggal buku wajib dalam format string')
+			.optional(),
+		updatedAt: z
+			.string('Tanggal buku wajib dalam format string')
+			.optional(),
 	})
 	.refine((data) => data.readPage <= data.pageCount, {
-		// Refine valid when readpage lower or equal than pagecount
 		message: 'readPage tidak boleh lebih besar dari pageCount',
 		path: ['readPage'], // path of error
 	});
 
-// extract the inferred type
 type IBook = z.infer<typeof BookSchema>;
 
 export { BookSchema, IBook };
