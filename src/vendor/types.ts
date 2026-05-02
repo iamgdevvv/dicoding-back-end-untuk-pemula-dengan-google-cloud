@@ -3,9 +3,7 @@ import { z } from 'zod';
 const BookSchema = z
 	.object({
 		id: z.string('ID buku wajib dalam format string').optional(),
-		name: z
-			.string('Nama buku wajib dalam format string')
-			.min(1, 'Mohon isi nama buku'),
+		name: z.string('Mohon isi nama buku').min(1, 'Mohon isi nama buku'),
 		year: z
 			.number('Tahun buku wajib dalam format number')
 			.min(0, 'Tahun buku tidak bisa kurang dari waktu 0')
@@ -22,12 +20,8 @@ const BookSchema = z
 		publisher: z
 			.string('Penerbit buku wajib dalam format string')
 			.min(1, 'Mohon isi penerbit buku'),
-		pageCount: z
-			.number('Total halaman buku wajib dalam format string')
-			.min(1, 'Mohon isi total halaman buku'),
-		readPage: z
-			.number('Halaman terakhir buku wajib dalam format string')
-			.min(1, 'Mohon isi halaman terakhir buku'),
+		pageCount: z.number('Mohon isi total halaman buku'),
+		readPage: z.number('Mohon isi halaman terakhir buku'),
 		reading: z.boolean('Mohon isi true/false untuk sedang baca buku'),
 		finished: z
 			.boolean('Selesai baca buku wajib dalam format boolean')

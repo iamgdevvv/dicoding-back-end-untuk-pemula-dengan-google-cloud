@@ -7,7 +7,7 @@ type FilteredBooks = {
 	name?: string;
 };
 
-const filteredBooks = ({ reading, finished, name }: FilteredBooks): IBook[] => {
+const queryBooks = ({ reading, finished, name }: FilteredBooks): IBook[] => {
 	if (!reading && !finished && !name) {
 		return books;
 	}
@@ -39,4 +39,4 @@ const filteredBooks = ({ reading, finished, name }: FilteredBooks): IBook[] => {
 	return dafaFilter;
 };
 
-export { filteredBooks };
+export { queryBooks };

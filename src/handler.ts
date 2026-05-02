@@ -2,13 +2,18 @@ import { nanoid } from 'nanoid';
 import { Request, ResponseToolkit, ResponseObject } from '@hapi/hapi';
 import { BookSchema, IBook } from './vendor/types';
 import books from './books';
-import { filteredBooks } from './controller/books';
+import { queryBooks } from './controller/books';
 
-const addBookHandler = (request: Request, h: ResponseToolkit): ResponseObject => {
+const addBookHandler = (
+	request: Request,
+	h: ResponseToolkit,
+): ResponseObject => {
 	const validatePayload = BookSchema.safeParse(request.payload);
 
 	if (!validatePayload.success) {
-		const messageErorrs = validatePayload.error.issues.map((issue) => issue.message);
+		const messageErorrs = validatePayload.error.issues.map(
+			(issue) => issue.message,
+		);
 		const response = h.response({
 			status: 'fail',
 			message: `Gagal menambahkan buku. ${messageErorrs.join(', ')}`,
@@ -17,7 +22,16 @@ const addBookHandler = (request: Request, h: ResponseToolkit): ResponseObject =>
 		return response;
 	}
 
-	const { name, year, author, summary, publisher, pageCount, readPage, reading } = <IBook>request.payload;
+	const {
+		name,
+		year,
+		author,
+		summary,
+		publisher,
+		pageCount,
+		readPage,
+		reading,
+	} = <IBook>request.payload;
 
 	const id = nanoid(16);
 	const insertedAt = new Date().toISOString();
@@ -64,8 +78,11 @@ const addBookHandler = (request: Request, h: ResponseToolkit): ResponseObject =>
 	return response;
 };
 
-const getAllBooksHandler = (request: Request, h: ResponseToolkit): ResponseObject => {
-	const dataBooks = filteredBooks(request.query).map((book) => ({
+const getAllBooksHandler = (
+	request: Request,
+	h: ResponseToolkit,
+): ResponseObject => {
+	const dataBooks = queryBooks(request.query).map((book) => ({
 		id: book.id,
 		name: book.name,
 		publisher: book.publisher,
@@ -80,7 +97,10 @@ const getAllBooksHandler = (request: Request, h: ResponseToolkit): ResponseObjec
 	return response;
 };
 
-const getBookByIdHandler = (request: Request, h: ResponseToolkit): ResponseObject => {
+const getBookByIdHandler = (
+	request: Request,
+	h: ResponseToolkit,
+): ResponseObject => {
 	const { bookId } = request.params;
 
 	const book = books.find((n) => n.id === bookId);
@@ -103,13 +123,18 @@ const getBookByIdHandler = (request: Request, h: ResponseToolkit): ResponseObjec
 	return response;
 };
 
-const editBookByIdHandler = (request: Request, h: ResponseToolkit): ResponseObject => {
+const editBookByIdHandler = (
+	request: Request,
+	h: ResponseToolkit,
+): ResponseObject => {
 	const { bookId } = request.params;
 
 	const validatePayload = BookSchema.safeParse(request.payload);
 
 	if (!validatePayload.success) {
-		const messageErorrs = validatePayload.error.issues.map((issue) => issue.message);
+		const messageErorrs = validatePayload.error.issues.map(
+			(issue) => issue.message,
+		);
 		const response = h.response({
 			status: 'fail',
 			message: `Gagal memperbarui buku. ${messageErorrs.join(', ')}`,
@@ -118,7 +143,16 @@ const editBookByIdHandler = (request: Request, h: ResponseToolkit): ResponseObje
 		return response;
 	}
 
-	const { name, year, author, summary, publisher, pageCount, readPage, reading } = <IBook>request.payload;
+	const {
+		name,
+		year,
+		author,
+		summary,
+		publisher,
+		pageCount,
+		readPage,
+		reading,
+	} = <IBook>request.payload;
 	const updatedAt = new Date().toISOString();
 
 	const index = books.findIndex((book) => book.id === bookId);
@@ -153,7 +187,10 @@ const editBookByIdHandler = (request: Request, h: ResponseToolkit): ResponseObje
 	return response;
 };
 
-const deleteBookByIdHandler = (request: Request, h: ResponseToolkit): ResponseObject => {
+const deleteBookByIdHandler = (
+	request: Request,
+	h: ResponseToolkit,
+): ResponseObject => {
 	const { bookId } = request.params;
 
 	const index = books.findIndex((book) => book.id === bookId);
@@ -175,4 +212,10 @@ const deleteBookByIdHandler = (request: Request, h: ResponseToolkit): ResponseOb
 	return response;
 };
 
-export { addBookHandler, getAllBooksHandler, getBookByIdHandler, editBookByIdHandler, deleteBookByIdHandler };
+export {
+	addBookHandler,
+	getAllBooksHandler,
+	getBookByIdHandler,
+	editBookByIdHandler,
+	deleteBookByIdHandler,
+};
